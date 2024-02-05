@@ -1,0 +1,30 @@
+<table>
+  <thead>
+    <tr>
+      <th *ngFor="let column of header; let colIndex = index">
+        {{ column }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of visibleRows; let rowIndex = index">
+      <td *ngFor="let cell of row; let colIndex = index">
+        <i class="fa-solid fa-pen-to-square">
+		<input [ngModel]="row[colIndex]" [disabled]="editingCell !== null && rowIndex == editingCell[0] && colIndex == editingCell[1]"/>
+        </i>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div>
+  <button (click)="saveCsvData()">Save</button>
+  <button (click)="editCell(1, 1, 'New Value')">Edit Cell</button>
+  <button (click)="addLine()">Add Line</button>
+</div>
+<div class="pagination">
+  <button (click)="goToFirstPage()" [disabled]="currentPage === 1">First</button>
+  <button (click)="changePage(-1)" [disabled]="currentPage === 1">Previous</button>
+  <span>{{ currentPage }} / {{ getTotalPages() }}</span>
+  <button (click)="changePage(1)" [disabled]="currentPage === getTotalPages()">Next</button>
+  <button (click)="goToLastPage()" [disabled]="currentPage === getTotalPages()">Last</button>
+</div>
