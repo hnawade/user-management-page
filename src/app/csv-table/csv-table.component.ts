@@ -10,37 +10,37 @@ import { Permissions } from '../permissions';
 })
 export class CsvTableComponent implements OnInit {
   csvData: string = '';
-  rows: string[][] = [];
+  rows: string[] = [];
   header: string[] = [];
   itemsPerPage: number = 20;
   currentPage: number = 1;
   totalItems: number = 0;
-  visibleRows: string[][] = [];
+  visibleRows: User[] = [];
   editingCell: [number, number] | null = null;
   focusedCell: [number, number] | null = null;
 
-  constructor(private csvEditService: CsvEditService) {}
+  constructor(private csvEditService: CsvEditService) { }
 
   ngOnInit(): void {
     this.csvEditService.getCsvData().subscribe((data: string) => {
       this.csvData = data;
-      this.rows = this.csvData.split('\r\n').map((row) => row.split(','));
-      this.header = this.rows[0];
+      this.rows = this.csvData.split('\r\n');
+      this.header = this.rows[0].split(',');
       this.rows = this.rows.slice(1);
       this.totalItems = this.rows.length;
       this.updateVisibleRows();
     });
   }
-
+  
   saveCsvData() {
-    this.csvEditService.editCsvData([this.header, ...this.rows]).subscribe((editedData: string) => {
+    this.csvEditService.editCsvData([this.header, ...this.rows.map((row) => row.split(','))]).subscribe((editedData: string) => {
       // Here, you can send the editedData to a server or save it locally.
       // For this example, we'll update the local data.
       this.csvData = editedData;
-      this.rows = editedData.split('\n').map((row) => row.split(','));
+      this.rows = editedData.split('\n');
     });
   }
-
+  
   lineToUser(line: string): User {
     const row: string[] = line.split(',');
     const email = row[0];
@@ -50,11 +50,11 @@ export class CsvTableComponent implements OnInit {
     const permissionsSet: string[] = Object.values(Permissions);
     const permissions: Permissions[] = this.header.filter((headerName, idx) => permissionsSet.includes(headerName) && row[idx] === "1").map((x) => x as Permissions);
     return {
-        email,
-	token,
-	devices,
-	school,
-	permissions
+      email,
+      token,
+      devices,
+      school,
+      permissions
     };
   }
 
@@ -83,16 +83,15 @@ export class CsvTableComponent implements OnInit {
       // Refresh the table after adding a new line
       this.csvEditService.getCsvData().subscribe((data: string) => {
         this.csvData = data;
-        this.rows = this.csvData.split('\n').map((row) => row.split(','));
+        this.rows = this.csvData.split('\n');
       });
     });
   }
-  
+
   updateVisibleRows() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.visibleRows = this.rows.slice(startIndex, endIndex);
-    console.log(this.visibleRows.map((row) => this.lineToUser(row.join(','))));
+    this.visibleRows = this.rows.slice(startIndex, endIndex).map(this.lineToUser.bind(this));
   }
   goToFirstPage() {
     this.currentPage = 1;
@@ -103,7 +102,7 @@ export class CsvTableComponent implements OnInit {
     this.currentPage = this.getTotalPages();
     this.updateVisibleRows();
   }
-  
+
   changePage(direction: number) {
     this.currentPage += direction;
     if (this.currentPage < 1) {
@@ -121,10 +120,10 @@ export class CsvTableComponent implements OnInit {
   logInfo(info: any): void {
     console.log(info);
   }
-//
-//  updateCellValue(row: string[], colIndex: number, event: Event) {
-//    console.log(event);
-//    row[colIndex] = (event.target as HTMLInputElement).value;
-//    event.preventDefault();
-//  }
+  //
+  //  updateCellValue(row: string[], colIndex: number, event: Event) {
+  //    console.log(event);
+  //    row[colIndex] = (event.target as HTMLInputElement).value;
+  //    event.preventDefault();
+  //  }
 }

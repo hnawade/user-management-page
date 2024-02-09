@@ -1,18 +1,21 @@
 <table>
   <thead>
     <tr>
-      <th *ngFor="let column of header; let colIndex = index">
-        {{ column }}
-      </th>
+      <th>Email</th>
+      <th>School</th>
+      <th>Level</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let row of visibleRows; let rowIndex = index">
-      <td *ngFor="let cell of row; let colIndex = index">
+      <td>{{ row.email }}</td>
+      <td>{{ row.school }}</td>
+      <td>{{ row.permissions }}</td>
+      <!-- <td *ngFor="let cell of row; let colIndex = index">
         <i class="fa-solid fa-pen-to-square">
 		<input [ngModel]="row[colIndex]" [disabled]="editingCell !== null && rowIndex == editingCell[0] && colIndex == editingCell[1]"/>
         </i>
-      </td>
+      </td> -->
     </tr>
   </tbody>
 </table>
