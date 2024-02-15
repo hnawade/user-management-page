@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of visibleRows; let rowIndex = index">
+    <tr *ngFor="let row of visibleRows; let rowIndex = index" (click)="selectUser(row)" [ngClass]="{ 'selected-row': row === selectedUser }">
       <td>{{ row.email }}</td>
       <td>{{ row.school }}</td>
       <td>{{ row.permissions }}</td>
@@ -20,9 +20,9 @@
   </tbody>
 </table>
 <div>
-  <button (click)="saveCsvData()">Save</button>
-  <button (click)="editCell(1, 1, 'New Value')">Edit Cell</button>
-  <button (click)="addLine()">Add Line</button>
+  <!-- <button (click)="saveCsvData()">Save</button>
+  <button (click)="editCell(1, 1, 'New Value')">Edit Cell</button> -->
+  <button routerLink="/add-user">New User</button>
 </div>
 <div class="pagination">
   <button (click)="goToFirstPage()" [disabled]="currentPage === 1">First</button>

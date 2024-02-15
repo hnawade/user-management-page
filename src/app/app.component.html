@@ -1,4 +1,13 @@
-<app-csv-table></app-csv-table>
+<main>
+  <a [routerLink]="['/']">
+    <header class="brand-name">
+      <img class="brand-logo" src="/favicon.ico" alt="logo" aria-hidden="true">
+    </header>
+  </a>
+  <section class="content">
+    <router-outlet></router-outlet>
+  </section>
+</main>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->

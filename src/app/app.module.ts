@@ -6,17 +6,25 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { CsvTableComponent } from './csv-table/csv-table.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NewUserComponent } from './new-user/new-user.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CsvTableComponent
+    CsvTableComponent,
+    NewUserComponent,
+
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    RouterModule.forRoot([
+      {path: '', component: CsvTableComponent},
+      {path: 'add-user', component: NewUserComponent}
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]

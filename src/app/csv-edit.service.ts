@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { User } from './models/user';
+import { Permissions } from './models/permissions';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +28,12 @@ export class CsvEditService {
   addCsvLine(newLine: string[]): Observable<string> {
     const endpoint = `${this.csvUrl}/add-line`;
     return this.http.post(endpoint, newLine).pipe(map(() => 'Line added successfully.'));
+  }
+
+  addUser(user: User): Observable<string> {
+    console.log('New User:', user);
+    const S2Flag = user.permissions.includes(Permissions.S2) ? '1' : '';
+    const B1Flag = user.permissions.includes(Permissions.B1) ? '1' : '';
+    return this.addCsvLine([user.email, user.token, '', '', user.school, '', S2Flag, B1Flag, '','','','','','','','',]);
   }
 }

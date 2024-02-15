@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CsvEditService } from '../csv-edit.service';
-import { User } from '../user';
-import { Permissions } from '../permissions';
+import { User } from '../models/user';
+import { Permissions } from '../models/permissions';
 
 @Component({
   selector: 'app-csv-table',
@@ -18,6 +18,8 @@ export class CsvTableComponent implements OnInit {
   visibleRows: User[] = [];
   editingCell: [number, number] | null = null;
   focusedCell: [number, number] | null = null;
+  selectedUser: User | undefined = undefined;
+  newUser: User | undefined = undefined;
 
   constructor(private csvEditService: CsvEditService) { }
 
@@ -93,6 +95,7 @@ export class CsvTableComponent implements OnInit {
     const endIndex = startIndex + this.itemsPerPage;
     this.visibleRows = this.rows.slice(startIndex, endIndex).map(this.lineToUser.bind(this));
   }
+
   goToFirstPage() {
     this.currentPage = 1;
     this.updateVisibleRows();
@@ -119,6 +122,14 @@ export class CsvTableComponent implements OnInit {
 
   logInfo(info: any): void {
     console.log(info);
+  }
+
+  selectUser(user: User) {
+    if (user !== this.selectedUser) {
+      this.selectedUser = user;
+    } else {
+      this.selectedUser = undefined;
+    }
   }
   //
   //  updateCellValue(row: string[], colIndex: number, event: Event) {
